@@ -1,3 +1,4 @@
+import collections
 import cStringIO
 import itertools
 import os
@@ -12,6 +13,8 @@ _UNESCAPE_CHARACTERS = u'\\ ()[]{};`"$'
 
 PREFERENCES = plistlib.readPlist('info.plist')
 BUNDLE_ID = PREFERENCES['bundleid']
+
+result = collections.namedtuple('result', ['uid', 'arg', 'title', 'subtitle', 'icon'])
 
 def args():
     return tuple(unescape(decode(arg)) for arg in sys.argv[1:])
@@ -33,7 +36,7 @@ def path(volatile):
     if not os.access(path, os.R_OK):
         os.mkdir(path)
     if not os.access(path, os.W_OK):
-        raise IOError('No write access to path: %s' % path)
+        raise IOError('No write access: %s' % path)
     return path
 
 def unescape(query, characters=None):
@@ -44,11 +47,11 @@ def unescape(query, characters=None):
 def write(text):
     sys.stdout.write(text)
 
-def xml(result):
+def xml(results):
     tree = ElementTree(fromstring('<items/>'))
     root = tree.getroot()
-    for args in itertools.islice(result, _MAX_RESULTS):
-        item(root, *map(unicode, args))
+    for result in itertools.islice(results, _MAX_RESULTS):
+        item(root, *map(unicode, result))
     buffer = cStringIO.StringIO()
     buffer.write('<?xml version="1.0"?>\n')
     tree.write(buffer, encoding='utf-8')

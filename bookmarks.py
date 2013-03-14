@@ -12,9 +12,9 @@ def places(profile):
     profile = [d for d in glob.glob(os.path.expanduser(profile)) if os.path.isdir(d)][0]
     return os.path.join(profile, 'places.sqlite')
 
-def result(db, query):
+def results(db, query):
     return (
-        (uid, url, title, url, u'icon.png') for (uid, title, url) in
+        alfred.result(uid, url, title, url, u'icon.png') for (uid, title, url) in
         db.execute(sql(query))
     )
 
@@ -37,4 +37,4 @@ def where(query):
 
 (profile, query) = alfred.args()
 db = sqlite3.connect(places(profile))
-alfred.write(alfred.xml(result(db, query)))
+alfred.write(alfred.xml(results(db, query)))
