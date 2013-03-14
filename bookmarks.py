@@ -10,7 +10,7 @@ from xml.etree.ElementTree import ElementTree, SubElement, fromstring
 
 UNESCAPE_CHARACTERS = """\\ ()[]{};`"$"""
 
-def add(root, uid, title, url):
+def add(root, uid, title, url, *rest):
     item = SubElement(root, 'item', {'uid': uid, 'arg': url})
     for (tag, value) in [('title', title), ('subtitle', url), ('icon', 'icon.png')]:
         SubElement(item, tag).text = value
@@ -26,8 +26,10 @@ def places(profile):
     return os.path.join(profile, 'places.sqlite')
 
 def sql(query):
-    return u'\nunion\n'.join(u"""\
-select moz_places.id, moz_places.title, moz_places.url from moz_places
+    return """\
+%s
+order by visit_count desc""" % u'\nunion\n'.join(u"""\
+select moz_places.id, moz_places.title, moz_places.url, moz_places.visit_count from moz_places
 %s
 where %s""" % (join, where(query)) for join in (
         u'inner join %(table)s on moz_places.id = %(table)s.%(field)s' % locals()
