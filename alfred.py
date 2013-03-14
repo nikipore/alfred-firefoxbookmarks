@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import collections
 import cStringIO
 import itertools
@@ -33,7 +34,7 @@ def path(volatile):
         False: '~/Library/Application Support/Alfred 2/Workflow Data'
     }[bool(volatile)]
     path = os.path.join(os.path.expanduser(path), BUNDLE_ID)
-    if not os.access(path, os.R_OK):
+    if not os.path.exists(path):
         os.mkdir(path)
     if not os.access(path, os.W_OK):
         raise IOError('No write access: %s' % path)
