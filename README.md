@@ -5,7 +5,7 @@ This is an Alfred 2 workflow which gives you access to your Firefox bookmarks. I
 
 Installation
 ------------
-Download and double-click 
+Download and double-click [Firefox Bookmarks.alfredworkflow](https://github.com/nikipore/alfred-firefoxbookmarks/blob/master/Firefox%20Bookmarks.alfredworkflow).
 
 Usage
 -----
@@ -13,4 +13,4 @@ Just type `ff <query>`.
 
 Note
 ----
-This workflow looks for the `places.db` in your default profile which must reside at `~/Library/Application Support/Firefox`.
+This workflow looks for the `places.db` in your default profile which must reside at `~/Library/Application Support/Firefox/Profiles/`.
