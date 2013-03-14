@@ -8,7 +8,6 @@ import unicodedata
 
 from xml.etree.ElementTree import ElementTree, SubElement, fromstring
 
-FIREFOX_HOME = os.path.join(os.path.expanduser('~'), 'Library', 'Application Support', 'Firefox', 'Profiles')
 UNESCAPE_CHARACTERS = """\\ ()[]{};`"$"""
 
 def add(root, uid, title, url):
@@ -22,8 +21,8 @@ def combine(operator, iterable):
 def decode(s):
     return unicodedata.normalize('NFC', s.decode('utf-8'))
 
-def places():
-    profile = [d for d in glob.glob(os.path.join(FIREFOX_HOME, '*.default')) if os.path.isdir(d)][0]
+def places(profile):
+    profile = [d for d in glob.glob(os.path.expanduser(profile)) if os.path.isdir(d)][0]
     return os.path.join(profile, 'places.sqlite')
 
 def sql(query):
@@ -56,6 +55,6 @@ def xml(result):
     tree.write(buffer, encoding='utf-8')
     return buffer.getvalue()
 
-query = unescape(decode(sys.argv[1]))
-db = sqlite3.connect(places())
+(profile, query) = [unescape(decode(arg)) for arg in sys.argv[1:]]
+db = sqlite3.connect(places(profile))
 sys.stdout.write(xml(db.execute(sql(query))))
