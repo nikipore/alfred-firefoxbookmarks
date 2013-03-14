@@ -19,22 +19,24 @@ def result(db, query):
     )
 
 def sql(query):
-    return u"""\
+    queryTemplate = u"""\
 %s
-order by visit_count desc""" % u'\nunion\n'.join(u"""\
+order by visit_count desc"""
+    subqueryTemplate = u"""\
 select moz_places.id, moz_places.title, moz_places.url, moz_places.visit_count from moz_places
 %s
-where %s""" % (join, where(query)) for join in (
-        u'inner join %(table)s on moz_places.id = %(table)s.%(field)s' % locals()
+where %s"""
+    joinTemplate = u'inner join %(table)s on moz_places.id = %(table)s.%(field)s'
+    return queryTemplate % u'\nunion\n'.join(
+        subqueryTemplate % (joinTemplate % locals(), where(query))
         for (table, field) in [(u'moz_inputhistory', u'place_id'), (u'moz_bookmarks', u'id')]
-    ))
+    )
 
 def where(query):
     return combine(u'or', (
         combine(u'and', ((u"(moz_places.%s like '%%%s%%')" % (field, word)) for word in query.split(u' ')))
         for field in (u'title', u'url'))
     )
-
 
 (profile, query) = alfred.args()
 db = sqlite3.connect(places(profile))
