@@ -6,7 +6,7 @@ import time
 
 import alfred
 
-_CACHE = alfred.path(True)
+_CACHE = alfred.work(True)
 
 def combine(operator, iterable):
     return u'(%s)' % (' %s ' % operator).join(iterable)
