@@ -5,7 +5,7 @@ This is an Alfred 2 workflow which gives you access to your Firefox bookmarks. I
 
 Installation
 ------------
-Download and double-click [Firefox Bookmarks.alfredworkflow](https://github.com/nikipore/alfred-firefoxbookmarks/blob/master/Firefox%20Bookmarks.alfredworkflow).
+Download and double-click [Firefox Bookmarks.alfredworkflow](https://github.com/nikipore/alfred-firefoxbookmarks/raw/master/Firefox%20Bookmarks.alfredworkflow).
 
 Usage
 -----
