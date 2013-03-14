@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import cStringIO
 import glob
+import itertools
 import os
 import sqlite3
 import sys
@@ -8,6 +9,7 @@ import unicodedata
 
 from xml.etree.ElementTree import ElementTree, SubElement, fromstring
 
+MAX_RESULTS = 9
 UNESCAPE_CHARACTERS = """\\ ()[]{};`"$"""
 
 def add(root, uid, title, url, *rest):
@@ -50,7 +52,7 @@ def where(query):
 def xml(result):
     tree = ElementTree(fromstring('<items/>'))
     root = tree.getroot()
-    for args in result:
+    for args in itertools.islice(result, MAX_RESULTS):
         add(root, *map(unicode, args))
     buffer = cStringIO.StringIO()
     buffer.write('<?xml version="1.0"?>\n')
