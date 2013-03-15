@@ -24,7 +24,7 @@ def places(profile):
 
 def results(db, query):
     for (uid, title, url, data, expiration) in db.execute(sql(query)):
-        yield alfred.result(uid, url, title, url, icon(uid, data, expiration))
+        yield alfred.Item({u'uid': alfred.uid(uid), u'arg': url}, title, url, icon(uid, data, expiration))
 
 def sql(query):
     subqueryTemplate = u"""\
