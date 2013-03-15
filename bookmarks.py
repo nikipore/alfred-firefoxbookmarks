@@ -41,8 +41,9 @@ inner join moz_favicons on moz_places.favicon_id = moz_favicons.id"""
     )
 
 def where(query):
+    words = [word.replace(u"'", u"''") for word in query.split(u' ')]
     return combine(u'or', (
-        combine(u'and', ((u"(moz_places.%s like '%%%s%%')" % (field, word)) for word in query.split(u' ')))
+        combine(u'and', ((u"(moz_places.%s like '%%%s%%')" % (field, word)) for word in words))
         for field in (u'title', u'url'))
     )
 
