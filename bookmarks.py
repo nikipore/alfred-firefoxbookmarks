@@ -6,15 +6,15 @@ import time
 
 import alfred
 
+_CACHE_EXPIRY = 24 * 60 * 60 # in seconds
 _CACHE = alfred.work(True)
 
 def combine(operator, iterable):
     return u'(%s)' % (' %s ' % operator).join(iterable)
 
-def icon(uid, data, expiration):
+def icon(uid, data):
     icon = os.path.join(_CACHE, 'icon-%d.png' % uid)
-    expired = (expiration / 1000000.0) > time.time()
-    if expired or not os.path.exists(icon):
+    if (not os.path.exists(icon)) or ((time.time() - os.path.getmtime(icon)) > _CACHE_EXPIRY):
         open(icon, 'wb').write(data)
     return icon
 
@@ -23,12 +23,12 @@ def places(profile):
     return os.path.join(profile, 'places.sqlite')
 
 def results(db, query):
-    for (uid, title, url, data, expiration) in db.execute(sql(query)):
-        yield alfred.Item({u'uid': alfred.uid(uid), u'arg': url}, title, url, icon(uid, data, expiration))
+    for (uid, title, url, data) in db.execute(sql(query)):
+        yield alfred.Item({u'uid': alfred.uid(uid), u'arg': url}, title, url, icon(uid, data))
 
 def sql(query):
     subqueryTemplate = u"""\
-select moz_places.id, moz_places.title, moz_places.url, moz_favicons.data, moz_favicons.expiration from moz_places
+select moz_places.id, moz_places.title, moz_places.url, moz_favicons.data from moz_places
 %s
 where %s"""
     joinTemplate = u"""\
