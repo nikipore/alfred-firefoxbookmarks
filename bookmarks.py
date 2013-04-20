@@ -23,7 +23,7 @@ def icon(db, faviconid):
     return icon
 
 def places(profile):
-    profile = [d for d in glob.glob(os.path.expanduser(profile)) if os.path.isdir(d)][0]
+    profile = (d for d in glob.glob(os.path.expanduser(profile)) if os.path.isdir(d)).next()
     return os.path.join(profile, 'places.sqlite')
 
 def results(db, query):
@@ -36,6 +36,13 @@ def results(db, query):
         yield alfred.Item({u'uid': alfred.uid(uid), u'arg': url}, title, url, icon(db, faviconid))
 
 def sql(query):
+    keywords = u"""\
+select distinct moz_places.id, moz_bookmarks.title, moz_places.url, moz_places.favicon_id from moz_places
+inner join moz_bookmarks on moz_places.id = moz_bookmarks.fk
+inner join moz_keywords on moz_bookmarks.keyword_id = moz_keywords.id
+where %s
+""" % where(query, [u'moz_keywords.keyword'])
+
     bookmarks = u"""\
 select distinct moz_places.id, moz_bookmarks.title, moz_places.url, moz_places.favicon_id from moz_places
 inner join moz_bookmarks on moz_places.id = moz_bookmarks.fk
@@ -50,7 +57,7 @@ where %s
     joinTemplate = u"""\
 inner join %(table)s on moz_places.id = %(table)s.%(field)s
 """
-    return u' union '.join([bookmarks, history])
+    return u' union '.join([keywords, bookmarks, history])
 
 def where(query, fields):
     words = [word.replace(u"'", u"''") for word in query.split(u' ')]
