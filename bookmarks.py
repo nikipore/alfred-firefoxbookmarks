@@ -6,14 +6,18 @@ import time
 
 import alfred
 
+_MAX_RESULTS = 20
 _CACHE_EXPIRY = 24 * 60 * 60 # in seconds
 _CACHE = alfred.work(True)
 
 def combine(operator, iterable):
-    return u'(%s)' % (' %s ' % operator).join(iterable)
+    return u'(%s)' % (u' %s ' % operator).join(iterable)
 
-def icon(uid, data):
-    icon = os.path.join(_CACHE, 'icon-%d.png' % uid)
+def icon(db, faviconid):
+    if not faviconid:
+        return
+    data = db.execute(u'select data from moz_favicons where id=%d' % faviconid).fetchone()[0]
+    icon = os.path.join(_CACHE, 'icon-%d.png' % faviconid)
     if (not os.path.exists(icon)) or ((time.time() - os.path.getmtime(icon)) > _CACHE_EXPIRY):
         open(icon, 'wb').write(data)
     return icon
@@ -23,30 +27,38 @@ def places(profile):
     return os.path.join(profile, 'places.sqlite')
 
 def results(db, query):
-    for (uid, title, url, data) in db.execute(sql(query)):
-        yield alfred.Item({u'uid': alfred.uid(uid), u'arg': url}, title, url, icon(uid, data))
+    found = set()
+    for result in db.execute(sql(query)):
+        if result in found:
+            continue
+        found.add(result)
+        (uid, title, url, faviconid) = result
+        yield alfred.Item({u'uid': alfred.uid(uid), u'arg': url}, title, url, icon(db, faviconid))
 
 def sql(query):
-    subqueryTemplate = u"""\
-select moz_places.id, moz_places.title, moz_places.url, moz_favicons.data from moz_places
-%s
-where %s"""
+    bookmarks = u"""\
+select distinct moz_places.id, moz_bookmarks.title, moz_places.url, moz_places.favicon_id from moz_places
+inner join moz_bookmarks on moz_places.id = moz_bookmarks.fk
+where %s
+""" % where(query, [u'moz_bookmarks.title', u'moz_places.url'])
+
+    history = u"""\
+select distinct moz_places.id, moz_places.title, moz_places.url, moz_places.favicon_id from moz_places
+inner join moz_inputhistory on moz_places.id = moz_inputhistory.place_id
+where %s
+""" % where(query, [u'moz_inputhistory.input', u'moz_places.title', u'moz_places.url'])
     joinTemplate = u"""\
 inner join %(table)s on moz_places.id = %(table)s.%(field)s
-inner join moz_favicons on moz_places.favicon_id = moz_favicons.id"""
-    tablesAndFields = [(u'moz_inputhistory', u'place_id'), (u'moz_bookmarks', u'id')]
-    return u'\nunion\n'.join(
-        subqueryTemplate % (joinTemplate % locals(), where(query))
-        for (table, field) in tablesAndFields
-    )
+"""
+    return u' union '.join([bookmarks, history])
 
-def where(query):
+def where(query, fields):
     words = [word.replace(u"'", u"''") for word in query.split(u' ')]
     return combine(u'or', (
-        combine(u'and', ((u"(moz_places.%s like '%%%s%%')" % (field, word)) for word in words))
-        for field in (u'title', u'url'))
+        combine(u'and', ((u"(%s like '%%%s%%')" % (field, word)) for word in words))
+        for field in fields)
     )
 
 (profile, query) = alfred.args()
 db = sqlite3.connect(places(profile))
-alfred.write(alfred.xml(results(db, query)))
+alfred.write(alfred.xml(results(db, query), maxresults=_MAX_RESULTS))
