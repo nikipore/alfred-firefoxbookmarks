@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import glob
 import os
+import re
 import sqlite3
 import time
 
@@ -26,7 +27,11 @@ def places(profile):
     profile = (d for d in glob.glob(os.path.expanduser(profile)) if os.path.isdir(d)).next()
     return os.path.join(profile, 'places.sqlite')
 
+def regexp(pattern, item):
+    return item and bool(re.match(pattern, item, flags=re.IGNORECASE))
+
 def results(db, query):
+    db.create_function("regexp", 2, regexp)
     found = set()
     for result in db.execute(sql(query)):
         if result in found:
@@ -40,31 +45,24 @@ def sql(query):
 select distinct moz_places.id, moz_bookmarks.title, moz_places.url, moz_places.favicon_id from moz_places
 inner join moz_bookmarks on moz_places.id = moz_bookmarks.fk
 inner join moz_keywords on moz_bookmarks.keyword_id = moz_keywords.id
-where %s
-""" % where(query, [u'moz_keywords.keyword'])
+where %s""" % where(query, [u'moz_keywords.keyword'])
 
     bookmarks = u"""\
 select distinct moz_places.id, moz_bookmarks.title, moz_places.url, moz_places.favicon_id from moz_places
 inner join moz_bookmarks on moz_places.id = moz_bookmarks.fk
-where %s
-""" % where(query, [u'moz_bookmarks.title', u'moz_places.url'])
+where %s""" % where(query, [u'moz_bookmarks.title', u'moz_places.url'])
 
     history = u"""\
 select distinct moz_places.id, moz_places.title, moz_places.url, moz_places.favicon_id from moz_places
 inner join moz_inputhistory on moz_places.id = moz_inputhistory.place_id
-where %s
-""" % where(query, [u'moz_inputhistory.input', u'moz_places.title', u'moz_places.url'])
+where %s""" % where(query, [u'moz_inputhistory.input', u'moz_places.title', u'moz_places.url'])
     joinTemplate = u"""\
 inner join %(table)s on moz_places.id = %(table)s.%(field)s
 """
-    return u' union '.join([keywords, bookmarks, history])
+    return u'\nunion\n'.join([keywords, bookmarks, history])
 
 def where(query, fields):
-    words = [word.replace(u"'", u"''") for word in query.split(u' ')]
-    return combine(u'or', (
-        combine(u'and', ((u"(%s like '%%%s%%')" % (field, word)) for word in words))
-        for field in fields)
-    )
+    return combine(u'or', ('%s regexp "%s"' % (field, '.*%s' % '.*'.join(re.escape(c) for c in query)) for field in fields))
 
 (profile, query) = alfred.args()
 db = sqlite3.connect(places(profile))
