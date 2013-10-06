@@ -17,10 +17,12 @@ def combine(operator, iterable):
 def icon(db, faviconid):
     if not faviconid:
         return
-    data = db.execute(u'select data from moz_favicons where id=%d' % faviconid).fetchone()[0]
+    data = db.execute(u'select data from moz_favicons where id=%d' % faviconid).fetchone()
+    if not data:
+        return
     icon = os.path.join(_CACHE, 'icon-%d.png' % faviconid)
     if (not os.path.exists(icon)) or ((time.time() - os.path.getmtime(icon)) > _CACHE_EXPIRY):
-        open(icon, 'wb').write(data)
+        open(icon, 'wb').write(data[0])
     return icon
 
 def places(profile):
