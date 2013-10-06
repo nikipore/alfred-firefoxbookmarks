@@ -64,7 +64,7 @@ inner join %(table)s on moz_places.id = %(table)s.%(field)s
     return u'\nunion\n'.join([keywords, bookmarks, history])
 
 def where(query, fields):
-    return combine(u'or', ('%s regexp "%s"' % (field, '.*%s' % '.*'.join(re.escape(c) for c in query)) for field in fields))
+    return combine(u'or', ('%s regexp "%s"' % (field, '.*%s' % '.*'.join(re.escape(c) for c in query.split(' '))) for field in fields))
 
 (profile, query) = alfred.args()
 db = sqlite3.connect(places(profile))
