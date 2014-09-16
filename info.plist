@@ -18,11 +18,11 @@
 			</dict>
 			<dict>
 				<key>destinationuid</key>
-				<string>F74B72FA-A8C2-4868-BA58-C82E2D8ADA6A</string>
+				<string>D854110A-B838-4E53-9E19-6927E920FFCB</string>
 				<key>modifiers</key>
 				<integer>1048576</integer>
 				<key>modifiersubtext</key>
-				<string>Copy</string>
+				<string>Copy URL to clipboard</string>
 			</dict>
 		</array>
 	</dict>
@@ -50,6 +50,8 @@
 			<string>alfred.workflow.action.script</string>
 			<key>uid</key>
 			<string>10BC39C1-3727-4AFE-8837-C01E80B640E8</string>
+			<key>version</key>
+			<integer>0</integer>
 		</dict>
 		<dict>
 			<key>config</key>
@@ -60,8 +62,11 @@
 				<integer>63</integer>
 				<key>keyword</key>
 				<string>ff</string>
+				<key>runningsubtext</key>
+				<string>Scanning …</string>
 				<key>script</key>
-				<string>python bookmarks.py "{query}"</string>
+				<string>PROFILE="~/Library/Application Support/Firefox/Profiles/*.default"
+python bookmarks.py "${PROFILE}" "{query}"</string>
 				<key>subtext</key>
 				<string>Search Firefox Bookmarks</string>
 				<key>title</key>
@@ -75,6 +80,8 @@
 			<string>alfred.workflow.input.scriptfilter</string>
 			<key>uid</key>
 			<string>5DBEA531-326D-4036-8FDE-9353EFE432FB</string>
+			<key>version</key>
+			<integer>0</integer>
 		</dict>
 		<dict>
 			<key>config</key>
@@ -89,7 +96,9 @@
 			<key>type</key>
 			<string>alfred.workflow.action.script</string>
 			<key>uid</key>
-			<string>F74B72FA-A8C2-4868-BA58-C82E2D8ADA6A</string>
+			<string>D854110A-B838-4E53-9E19-6927E920FFCB</string>
+			<key>version</key>
+			<integer>0</integer>
 		</dict>
 	</array>
 	<key>readme</key>
@@ -106,7 +115,7 @@
 			<key>ypos</key>
 			<real>10</real>
 		</dict>
-		<key>F74B72FA-A8C2-4868-BA58-C82E2D8ADA6A</key>
+		<key>D854110A-B838-4E53-9E19-6927E920FFCB</key>
 		<dict>
 			<key>ypos</key>
 			<real>130</real>
