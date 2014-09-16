@@ -16,6 +16,14 @@
 				<key>modifiersubtext</key>
 				<string></string>
 			</dict>
+			<dict>
+				<key>destinationuid</key>
+				<string>F74B72FA-A8C2-4868-BA58-C82E2D8ADA6A</string>
+				<key>modifiers</key>
+				<integer>1048576</integer>
+				<key>modifiersubtext</key>
+				<string>Copy</string>
+			</dict>
 		</array>
 	</dict>
 	<key>createdby</key>
@@ -68,6 +76,21 @@
 			<key>uid</key>
 			<string>5DBEA531-326D-4036-8FDE-9353EFE432FB</string>
 		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>escaping</key>
+				<integer>63</integer>
+				<key>script</key>
+				<string>echo "{query}" | pbcopy</string>
+				<key>type</key>
+				<integer>0</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>F74B72FA-A8C2-4868-BA58-C82E2D8ADA6A</string>
+		</dict>
 	</array>
 	<key>readme</key>
 	<string></string>
@@ -82,6 +105,11 @@
 		<dict>
 			<key>ypos</key>
 			<real>10</real>
+		</dict>
+		<key>F74B72FA-A8C2-4868-BA58-C82E2D8ADA6A</key>
+		<dict>
+			<key>ypos</key>
+			<real>130</real>
 		</dict>
 	</dict>
 	<key>webaddress</key>

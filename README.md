@@ -13,6 +13,8 @@ Usage
 -----
 Just type `ff <query>`.
 
+Hit `return` on a URL to have Firefox open it. Hit `Cmd + return` on a URL to copy it to the clipboard.
+
 Note
 ----
 This workflow looks for the Firefox `places.db` according to your setting of `PROFILE` in the `ff`script filter (it's a glob expression, so the wildcards `*` and `?` are allowed). By default, it points to your default profile.
