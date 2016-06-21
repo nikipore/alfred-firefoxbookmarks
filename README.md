@@ -1,7 +1,7 @@
 alfred-firefoxbookmarks
 =======================
 
-This is an Alfred 2 workflow which gives you access to your Firefox bookmarks. In fact, in aims to mimick the awesome bar by scanning not only bookmarks, but also the input history, cf. the `places.db` [scheme](http://people.mozilla.org/~dietrich/places-erd.png).
+This is an Alfred 3 workflow which gives you access to your Firefox bookmarks. In fact, in aims to mimick the awesome bar by scanning not only bookmarks, but also the input history, cf. the `places.db` [scheme](http://people.mozilla.org/~dietrich/places-erd.png).
 
 The `alfred.py` module is a collection of helper functions which ease the communication with Alfred. Everyone is invited to use and improve it for other workflows.
 
