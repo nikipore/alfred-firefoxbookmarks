@@ -114,7 +114,7 @@
 				<key>runningsubtext</key>
 				<string>Scanning …</string>
 				<key>script</key>
-				<string>PROFILE="~/Library/Application Support/Firefox/Profiles/*.default"
+				<string>PROFILE="~/Library/Application Support/Firefox/Profiles/*.default*"
 python bookmarks.py "${PROFILE}" "{query}"</string>
 				<key>scriptargtype</key>
 				<integer>0</integer>
@@ -185,7 +185,7 @@ python bookmarks.py "${PROFILE}" "{query}"</string>
 				<key>runningsubtext</key>
 				<string>Scanning …</string>
 				<key>script</key>
-				<string>PROFILE="~/Library/Application Support/Firefox/Profiles/*.dev-edition-default"
+				<string>PROFILE="~/Library/Application Support/Firefox/Profiles/*.dev-edition-default*"
 python bookmarks.py "${PROFILE}" "{query}"</string>
 				<key>scriptargtype</key>
 				<integer>0</integer>
