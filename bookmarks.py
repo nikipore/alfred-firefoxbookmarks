@@ -4,6 +4,7 @@ import os
 import re
 import sqlite3
 import time
+from shutil import copyfile
 
 import alfred
 
@@ -36,11 +37,17 @@ order by moz_icons.id asc limit 1""" % url_hash).fetchone()
 
 def places(profile):
     profile = (d for d in glob.glob(os.path.expanduser(profile)) if os.path.isdir(d)).next()
-    return os.path.join(profile, 'places.sqlite')
+    orig = os.path.join(profile, 'places.sqlite')
+    new = os.path.join(profile, 'places-alfredcopy.sqlite')
+    copyfile(orig, new)
+    return new
 
 def favicons(profile):
     profile = (d for d in glob.glob(os.path.expanduser(profile)) if os.path.isdir(d)).next()
-    return os.path.join(profile, 'favicons.sqlite')
+    orig = os.path.join(profile, 'favicons.sqlite')
+    new = os.path.join(profile, 'favicons-alfredcopy.sqlite')
+    copyfile(orig, new)
+    return new
 
 def regexp(pattern, item):
     return item and bool(re.match(pattern, item, flags=re.IGNORECASE))
