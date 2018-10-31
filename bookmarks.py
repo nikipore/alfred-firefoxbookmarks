@@ -72,7 +72,7 @@ where %s""" % where(query, [u'moz_keywords.keyword'])
     bookmarks = u"""\
 select distinct moz_places.id, moz_bookmarks.title, moz_places.url, moz_places.url_hash from moz_places
 inner join moz_bookmarks on moz_places.id = moz_bookmarks.fk
-where %s and moz_places.foreign_count = 0""" % where(query, [u'moz_bookmarks.title', u'moz_places.url'])
+where %s""" % where(query, [u'moz_bookmarks.title', u'moz_places.url'])
 
     input_history = u"""\
 select distinct moz_places.id, moz_places.title, moz_places.url, moz_places.url_hash from moz_places
