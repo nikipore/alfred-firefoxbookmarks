@@ -95,6 +95,8 @@
 				<false/>
 				<key>alfredfiltersresultsmatchmode</key>
 				<integer>0</integer>
+				<key>argumenttreatemptyqueryasnil</key>
+				<false/>
 				<key>argumenttrimmode</key>
 				<integer>0</integer>
 				<key>argumenttype</key>
@@ -104,15 +106,15 @@
 				<key>keyword</key>
 				<string>ff</string>
 				<key>queuedelaycustom</key>
-				<integer>1</integer>
+				<integer>3</integer>
 				<key>queuedelayimmediatelyinitially</key>
 				<false/>
 				<key>queuedelaymode</key>
-				<integer>0</integer>
+				<integer>1</integer>
 				<key>queuemode</key>
 				<integer>1</integer>
 				<key>runningsubtext</key>
-				<string>Scanning …</string>
+				<string>Scanning…</string>
 				<key>script</key>
 				<string>PROFILE="~/Library/Application Support/Firefox/Profiles/*.default*"
 python bookmarks.py "${PROFILE}" "{query}"</string>
@@ -121,9 +123,9 @@ python bookmarks.py "${PROFILE}" "{query}"</string>
 				<key>scriptfile</key>
 				<string></string>
 				<key>subtext</key>
-				<string>Search Firefox Bookmarks</string>
+				<string>Search Firefox places</string>
 				<key>title</key>
-				<string>Firefox Bookmarks</string>
+				<string>Firefox Awesome Bar</string>
 				<key>type</key>
 				<integer>0</integer>
 				<key>withspace</key>
@@ -134,7 +136,7 @@ python bookmarks.py "${PROFILE}" "{query}"</string>
 			<key>uid</key>
 			<string>5DBEA531-326D-4036-8FDE-9353EFE432FB</string>
 			<key>version</key>
-			<integer>2</integer>
+			<integer>3</integer>
 		</dict>
 		<dict>
 			<key>config</key>
@@ -166,6 +168,8 @@ python bookmarks.py "${PROFILE}" "{query}"</string>
 				<false/>
 				<key>alfredfiltersresultsmatchmode</key>
 				<integer>0</integer>
+				<key>argumenttreatemptyqueryasnil</key>
+				<false/>
 				<key>argumenttrimmode</key>
 				<integer>0</integer>
 				<key>argumenttype</key>
@@ -175,11 +179,11 @@ python bookmarks.py "${PROFILE}" "{query}"</string>
 				<key>keyword</key>
 				<string>ffd</string>
 				<key>queuedelaycustom</key>
-				<integer>1</integer>
+				<integer>3</integer>
 				<key>queuedelayimmediatelyinitially</key>
 				<false/>
 				<key>queuedelaymode</key>
-				<integer>0</integer>
+				<integer>1</integer>
 				<key>queuemode</key>
 				<integer>1</integer>
 				<key>runningsubtext</key>
@@ -205,7 +209,7 @@ python bookmarks.py "${PROFILE}" "{query}"</string>
 			<key>uid</key>
 			<string>142D5735-C1EB-467D-B8F0-DB7B4F50D49F</string>
 			<key>version</key>
-			<integer>2</integer>
+			<integer>3</integer>
 		</dict>
 		<dict>
 			<key>config</key>
@@ -215,7 +219,7 @@ python bookmarks.py "${PROFILE}" "{query}"</string>
 				<key>escaping</key>
 				<integer>63</integer>
 				<key>script</key>
-				<string>open -a "/Applications/FirefoxDeveloperEdition.app" "{query}"</string>
+				<string>open -a "/Applications/Firefox Developer Edition.app" "{query}"</string>
 				<key>scriptargtype</key>
 				<integer>0</integer>
 				<key>scriptfile</key>
@@ -271,6 +275,10 @@ python bookmarks.py "${PROFILE}" "{query}"</string>
 			<integer>10</integer>
 		</dict>
 	</dict>
+	<key>variablesdontexport</key>
+	<array/>
+	<key>version</key>
+	<string></string>
 	<key>webaddress</key>
 	<string>https://github.com/nikipore</string>
 </dict>
