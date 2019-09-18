@@ -4,6 +4,7 @@ import os
 import re
 import sqlite3
 import time
+from shutil import copyfile
 
 import alfred
 
@@ -36,11 +37,17 @@ order by moz_icons.id asc limit 1""" % url_hash).fetchone()
 
 def places(profile):
     profile = (d for d in glob.glob(os.path.expanduser(profile)) if os.path.isdir(d)).next()
-    return os.path.join(profile, 'places.sqlite')
+    orig = os.path.join(profile, 'places.sqlite')
+    new = os.path.join(profile, 'places-alfredcopy.sqlite')
+    copyfile(orig, new)
+    return new
 
 def favicons(profile):
     profile = (d for d in glob.glob(os.path.expanduser(profile)) if os.path.isdir(d)).next()
-    return os.path.join(profile, 'favicons.sqlite')
+    orig = os.path.join(profile, 'favicons.sqlite')
+    new = os.path.join(profile, 'favicons-alfredcopy.sqlite')
+    copyfile(orig, new)
+    return new
 
 def regexp(pattern, item):
     return item and bool(re.match(pattern, item, flags=re.IGNORECASE))
@@ -65,7 +72,7 @@ where %s""" % where(query, [u'moz_keywords.keyword'])
     bookmarks = u"""\
 select distinct moz_places.id, moz_bookmarks.title, moz_places.url, moz_places.url_hash from moz_places
 inner join moz_bookmarks on moz_places.id = moz_bookmarks.fk
-where %s and moz_places.foreign_count = 0""" % where(query, [u'moz_bookmarks.title', u'moz_places.url'])
+where %s""" % where(query, [u'moz_bookmarks.title', u'moz_places.url'])
 
     input_history = u"""\
 select distinct moz_places.id, moz_places.title, moz_places.url, moz_places.url_hash from moz_places
